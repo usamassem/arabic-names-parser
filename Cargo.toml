@@ -1,0 +1,36 @@
+[package]
+name = "arabic-names-parser"
+version = "0.1.0"
+edition = "2024"
+description = "Low-level, I/O-agnostic normalization and decomposition of Arabic personal names into prefix, known-name, and postfix components"
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/usamassem/arabic-names-parser"
+keywords = ["arabic", "names", "nlp", "text-processing", "parser"]
+categories = ["text-processing", "internationalization", "parsing"]
+
+[lib]
+name = "arabic_names_parser"
+path = "src/lib.rs"
+
+[[example]]
+name = "cli"
+path = "examples/cli.rs"
+required-features = ["builtin-dict", "sync-io"]
+
+[features]
+default = []
+sync-io = []
+async-io = ["dep:tokio", "dep:futures-core"]
+builtin-dict = ["dep:csv"]
+online-lookup = []
+
+[dependencies]
+regex = "1"
+csv = { version = "1", optional = true }
+tokio = { version = "1", optional = true, default-features = false, features = ["io-util"] }
+futures-core = { version = "0.3", optional = true }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt", "io-util"] }
+futures-util = { version = "0.3", default-features = false, features = ["std"] }
